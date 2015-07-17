@@ -1,0 +1,26 @@
+{
+  "name": "ES_6",
+  "version": "0.1.0",
+  "description": "ES 6 practice for code fellows.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mobot11/ES_6_Practice.git"
+  },
+  "author": "Dylan Moberg",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mobot11/ES_6_Practice/issues"
+  },
+  "homepage": "https://github.com/mobot11/ES_6_Practice",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-babel": "^5.1.0"
+  },
+  "dependencies": {
+    "prompt": "^0.2.14"
+  }
+}
