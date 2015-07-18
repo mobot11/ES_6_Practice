@@ -1,5 +1,7 @@
 'use strict'
-class User {
+var prompt = require('prompt');
+
+  class User {
 	constructor(name, weapon, powerUp) {
 		this.name = name;
 		this.weapon = weapon
@@ -21,68 +23,82 @@ class User {
     }
 	}
 };
-function fightOne(fightOrFlight, user, enemy = 'samuari') {
-  	if(fightOrFlight === 'fight') {
-      user.health -= 5;
-      alert(`The ${enemy} is a master warrior, your health is decreased by 10`);
-  	}
-  	if(fightOrFlight === 'sneak') {
-  		if(user.sneak > 5) {
-  			alert(`you successfuly snuck around the ${enemy}`);
-  		} else if(user.sneak < 5) {
-  			alert(`the ${enemy} catches you as you are almost passed him and harms you with a ninja star before you get away, your health is decreased by 3`);
-  		  user.health -= 3;
-  		}
-  	if(fightOrFlight === 'speech') {
-  		alert(`you were able to reason with the ${enemy}, speech increased by 5`);
-  		user.speech += 5;
-  	}
-  }
- }
+
+
+  function fightOne(fightOrFlight, user, enemy = 'samuari') { 
+    	if(fightOrFlight === 'fight') {
+        user.health -= 5;
+        console.log(`The ${enemy} is a master warrior, your health is decreased by 10`);
+    	}
+    	if(fightOrFlight === 'sneak') {
+    		if(user.sneak > 5) {
+    			console.log(`you successfuly snuck around the ${enemy}`);
+    		} else if(user.sneak < 5) {
+    			console.log(`the ${enemy} catches you as you are almost passed him and harms you with a ninja star before you get away, your health is decreased by 3`);
+    		  user.health -= 3;
+    		}
+    	if(fightOrFlight === 'speech') {
+    		console.log(`you were able to reason with the ${enemy}, speech increased by 5`);
+    		user.speech += 5;
+    	}
+    }
+   }
  function timeout(duration) {
   	return new Promise( (resolve, reject) => {
       setTimeout(resolve, duration);
   	})
   }
-let start = prompt(`Hello there, would you like to play a game?`);
-console.log(start);
-
-if(start === 'yes') {
-	let name = prompt(`perfect!, what is your name?`);
-	console.log(name);
-	let weapon = prompt(`Okay ${name}, what is your weapon? Your choices are Katana, throwing stars or a hand grenade.`)
-	let powerUp = prompt(`last question, what is yor power up? Your choices are sneak, rage or speech`);
-  // var powerUpConf = (powerUp) => {
-
-  // 	alert(`your ${powerUp} skill has increased!`);
-  // }
-	let user = new User(name, weapon, powerUp);
-
-	user.increasePowerUp(powerUp);
-	console.log(user);
-
-	class Nemesis extends User {
-
-	};
-
-	var nemesis = new Nemesis(`asshole ${name}`, weapon, powerUp);
-	console.log(nemesis);
-
-
-  
-  let fightOrFlight1 = prompt(`So ${user.name}, you are walking through the woods and you encounter a samauri who wants to kill you, what do you want do do, fight, sneak or talk your way out of it?`);
-  
-  timeout(1000).then(fightOne(fightOrFlight1, user));
-
-  var userArr = prompt('you beat the samauri, what would you like as your reward? Name up to 5 things');
-
-  function award(args...) {
-  	alert(`here are your rewards ${args}`); 
+// function award(args...) {
+//       console.log(`here are your rewards ${args}`); 
+//     }
+  prompt.start();
+  prompt.get(['what is your name?', 'choose your weapon(katana, throwing stars, hand grenade)', 'What is your power up? (sneak, rage, speech)', 'you encounter a samauri in the forest, do you want to fight him? Sneak past him? or talk your way out of dying?', 'if you win, what do you want your prize to be? Enter at least five things'],function(err,result) {
+    let name = result['what is your name?'];
+    let weapon = result['choose your weapon(katana, throwing stars, hand grenade)'];
+    let powerUp = result['What is your power up? (sneak, rage, speech)']; 
+    let fightOrFlight1 = result['you encounter a samauri in the forest, do you want to fight him? Sneak past him? or talk your way out of dying?']
+    let reward = result['if you win, what do you want your prize to be? Enter at least five things']
+    var user = new User(name, weapon, powerUp);
+    // console.log(user);
+    var powerUpConf = (powerUp) => {
+    user.increasePowerUp(powerUp);
+    console.log(`your ${powerUp} skill has increased!`);
   }
+    class Nemesis extends User {
+    };
+  var nemesis = new Nemesis(`asshole ${name}`, weapon, powerUp);
+  // console.log(nemesis);
+  timeout(1000).then(fightOne(fightOrFlight1, user));
+  award(reward);
+  console.log('you won! game over');
+  })
 
-  alert('you won! game over');
 
-}
+
+
+  
+
+
+
+
+
+	
+
+	
+
+
+  
+  
+  
+  
+
+  
+
+  
+
+ 
+
+
 
 
 
