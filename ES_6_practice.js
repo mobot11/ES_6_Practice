@@ -1,77 +1,105 @@
 'use strict'
+
 var prompt = require('prompt');
 
-  class User {
-	constructor(name, weapon, powerUp) {
-		this.name = name;
-		this.weapon = weapon
-		this.powerUp = powerUp;
-		this.health = 10;
-		this.sneak = 5;
-		this.rage = 5;
-		this.speech = 5;
-	}
-	increasePowerUp(powerUp) {
-    if (powerUp === 'sneak') {
-    	this.sneak += 5;
-    }
-    if (powerUp === 'rage') {
-    	rage += 5;
-    }
-    if (powerUp === 'speech') {
-    	speech += 5;
-    }
-	}
-};
+class Warrior {
+  constructor(health) {
+    this.health = 10;
 
+  }
+}
 
-  function fightOne(fightOrFlight, user, enemy = 'samuari') { 
-    	if(fightOrFlight === 'fight') {
-        user.health -= 5;
-        console.log(`The ${enemy} is a master warrior, your health is decreased by 10`);
-    	}
-    	if(fightOrFlight === 'sneak') {
-    		if(user.sneak > 5) {
-    			console.log(`you successfuly snuck around the ${enemy}`);
-    		} else if(user.sneak < 5) {
-    			console.log(`the ${enemy} catches you as you are almost passed him and harms you with a ninja star before you get away, your health is decreased by 3`);
-    		  user.health -= 3;
-    		}
-    	if(fightOrFlight === 'speech') {
-    		console.log(`you were able to reason with the ${enemy}, speech increased by 5`);
-    		user.speech += 5;
-    	}
-    }
-   }
- function timeout(duration) {
-  	return new Promise( (resolve, reject) => {
+class Samuari extends Warrior {
+  constructor(weapon, name) {
+    super();
+    this.weapon = `Katana`;
+    this.name = 'Samuari';
+  }
+}
+
+class Knight extends Warrior {
+  constructor(weapon,name) {
+    super();
+    this.weapon = 'broadsword';
+    this.name = 'Knight';
+  }
+}
+
+class Viking extends Warrior {
+  constructor(weapon, name) {
+    super();
+    this.weapon = 'battleAxe';
+    this.name = 'viking';
+  }
+}
+
+var warriorSet = new Set();
+
+warriorSet.add(viking).add(samuari).add(knight);
+
+function fight(warrior1, warrior2, winProb = 10) {
+  var rand1 = Math.floor(Math.random() * 10);
+  var rand2 = Math.floor(Math.random() * 10)
+  var score1= winProb - rand1;
+  var score2 = winProb - rand2;
+  if((winProb - rand1) > (winProb - rand2)) {
+    console.log(`${warrior1.name} wins!`);
+  } else if ((winProb - rand1) < (winProb - rand2)) {
+    console.log(`${warrior2.name} wins!`);
+  }
+  else if ((winProb - rand1) === (winProb - rand2)) {
+    console.log(`the ${warrior1.name} and ${warrior2.name} tied!`);
+  }
+}
+
+function timeout(duration) {
+   return new Promise( (resolve, reject) => {
       setTimeout(resolve, duration);
-  	})
+   })
   }
-// function award(args...) {
-//       console.log(`here are your rewards ${args}`); 
-//     }
-  prompt.start();
-  prompt.get(['what is your name?', 'choose your weapon(katana, throwing stars, hand grenade)', 'What is your power up? (sneak, rage, speech)', 'you encounter a samauri in the forest, do you want to fight him? Sneak past him? or talk your way out of dying?', 'if you win, what do you want your prize to be? Enter at least five things'],function(err,result) {
-    let name = result['what is your name?'];
-    let weapon = result['choose your weapon(katana, throwing stars, hand grenade)'];
-    let powerUp = result['What is your power up? (sneak, rage, speech)']; 
-    let fightOrFlight1 = result['you encounter a samauri in the forest, do you want to fight him? Sneak past him? or talk your way out of dying?']
-    let reward = result['if you win, what do you want your prize to be? Enter at least five things']
-    var user = new User(name, weapon, powerUp);
-    // console.log(user);
-    var powerUpConf = (powerUp) => {
-    user.increasePowerUp(powerUp);
-    console.log(`your ${powerUp} skill has increased!`);
+
+function fightNow(warrior1, warrior2) {
+  return new Promise( (resolve, reject) => {
+  var rand1 = Math.floor(Math.random() * 10);
+  var rand2 = Math.floor(Math.random() * 10)
+  var score1= warrior1.winProb - rand1;
+  var score2 = warrior2.winProb - rand2;
+  if((warrior1.winProb - rand1) > (warrior2.winProb - rand2)) {
+    console.log(`${warrior1.name} wins!`);
+  } else if ((warrior1.winProb - rand1) < (warrior2.winProb - rand2)) {
+    console.log(`${warrior2.name} wins!`);
   }
-    class Nemesis extends User {
-    };
-  var nemesis = new Nemesis(`asshole ${name}`, weapon, powerUp);
-  // console.log(nemesis);
-  timeout(1000).then(fightOne(fightOrFlight1, user));
-  award(reward);
-  console.log('you won! game over');
+  else if ((warrior1.winProb - rand1) === (warrior2.winProb - rand2)) {
+    console.log(`the ${warrior1.name} and ${warrior2.name} tied!`);
+  }
   })
+}
+
+var viking = new Viking();
+var knight = new Knight();
+var samuari = new Samuari();
+
+
+var warrior1 = process.argv[2];
+var warrior2 = process.argv[3];
+
+console.log(warrior1);
+console.log(warrior2);
+
+fight(warrior1, warrior2);
+
+prompt.start();
+
+prompt.get(['Choose a warrior(viking, knight, samuari)', 'Choose a warrior to battle(viking, knight, samuari)'], (err, result) => {
+  var warrior1 = result['Choose a warrior(viking, knight, samuari)'];
+  var warrior2 = result['Choose a warrior to battle(viking, knight, samuari)'];
+  fight(warrior1, warrior2);
+
+  //prompt is causing Async issues that I frankly don't have the time to solve right now
+  //you get the idea!!!
+})
+
+
 
 
 
@@ -98,7 +126,7 @@ var prompt = require('prompt');
 
  
 
-`
+// `
 
 
 
